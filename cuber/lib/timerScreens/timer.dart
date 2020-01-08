@@ -29,6 +29,11 @@ class CubeTimerState extends State<CubeTimer> {
         setState(() {
           _time = _stopwatch.elapsedMilliseconds;
         });
+        if (_stopwatch.elapsed.inSeconds >= 10 * 60) {
+          _stopwatch.stop();
+          Navigator.pop(context, -1);
+          timer?.cancel();
+        }
       },
     );
   }

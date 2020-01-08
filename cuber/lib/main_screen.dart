@@ -25,7 +25,7 @@ class ResultScreenState extends State<ResultScreen> {
           Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
-              timeFormat(time, 3),
+              time == -1 ? "DNF" : timeFormat(time, 3),
               style: TextStyle(
                 fontSize: 40,
               ),

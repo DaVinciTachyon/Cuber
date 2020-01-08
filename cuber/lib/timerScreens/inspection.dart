@@ -10,8 +10,10 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
   AnimationController controller;
 
   String get timerString {
-    Duration duration = controller.duration * controller.value;
-    return '${(duration.inSeconds % 60)}';
+    Duration duration = controller.value == 0
+        ? controller.duration
+        : controller.duration * controller.value;
+    return '${duration.inSeconds % 60}';
   }
 
   @override
@@ -36,8 +38,10 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       color: Colors.amber,
-                      height:
-                          controller.value * MediaQuery.of(context).size.height,
+                      height: controller.value == 0
+                          ? MediaQuery.of(context).size.height
+                          : controller.value *
+                              MediaQuery.of(context).size.height,
                     ),
                   ),
                   SizedBox.expand(
@@ -65,10 +69,12 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                               );
                             } else {
                               controller.reverse(
-                                from: controller.value == 0.0
-                                    ? 1.0
-                                    : controller.value,
+                                from: 1.0,
                               );
+                              controller.addListener(() {
+                                if (controller.value == 0)
+                                  Navigator.pop(context, -1);
+                              });
                             }
                           },
                         );

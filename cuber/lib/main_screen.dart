@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'includes/time.dart';
-import 'countdown_timer.dart';
+import 'timerScreens/includes/time.dart';
+import 'timerScreens/inspection.dart';
 
 class ResultScreen extends StatefulWidget {
   @override
@@ -38,7 +38,7 @@ class ResultScreenState extends State<ResultScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return CountDownTimer();
+                    return Inspection();
                   },
                 ),
               );

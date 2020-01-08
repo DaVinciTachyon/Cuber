@@ -3,16 +3,23 @@ import 'dart:async';
 import 'includes/time.dart';
 
 class CubeTimer extends StatefulWidget {
+  final int penalty;
+  final int limit;
+
+  CubeTimer({this.penalty = 0, this.limit = 10 * 60});
+
   @override
-  State<StatefulWidget> createState() {
-    return CubeTimerState();
-  }
+  State<StatefulWidget> createState() => _CubeTimerState(penalty, limit);
 }
 
-class CubeTimerState extends State<CubeTimer> {
+class _CubeTimerState extends State<CubeTimer> {
   var _time;
   var _stopwatch;
   Timer _timer;
+  int _penalty;
+  int _limit;
+
+  _CubeTimerState(this._penalty, this._limit);
 
   @override
   void initState() {
@@ -29,7 +36,7 @@ class CubeTimerState extends State<CubeTimer> {
         setState(() {
           _time = _stopwatch.elapsedMilliseconds;
         });
-        if (_stopwatch.elapsed.inSeconds >= 10 * 60) {
+        if (_stopwatch.elapsed.inSeconds >= _limit) {
           _stopwatch.stop();
           Navigator.pop(context, -1);
           timer?.cancel();
@@ -52,6 +59,7 @@ class CubeTimerState extends State<CubeTimer> {
           onPressed: () {
             if (_stopwatch.isRunning) {
               _stopwatch.stop();
+              _time += _penalty * 1000;
               Navigator.pop(context, _time);
             } else {
               _stopwatch.reset();

@@ -2,18 +2,29 @@ import 'package:flutter/material.dart';
 import 'timer.dart';
 
 class Inspection extends StatefulWidget {
+  final int inspectionPenalty;
+  final int inspection;
+
+  Inspection({this.inspection = 15, this.inspectionPenalty = 2});
+
   @override
-  _InspectionTimer createState() => _InspectionTimer();
+  _InspectionTimer createState() =>
+      _InspectionTimer(this.inspection, this.inspectionPenalty);
 }
 
 class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
   AnimationController controller;
+  int _inspectionPenalty;
+  int _inspection;
 
-  String get timerString {
+  _InspectionTimer(this._inspection, this._inspectionPenalty);
+
+  int get timerString {
     Duration duration = controller.value == 0
         ? controller.duration
         : controller.duration * controller.value;
-    return '${duration.inSeconds % 60}';
+    int d = duration.inSeconds % 60;
+    return d >= _inspectionPenalty ? d - _inspectionPenalty : 0;
   }
 
   @override
@@ -21,7 +32,7 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 15),
+      duration: Duration(seconds: _inspection + _inspectionPenalty),
     );
   }
 
@@ -50,7 +61,7 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                       builder: (context, child) {
                         return FlatButton(
                           child: Text(
-                            timerString,
+                            "$timerString",
                             style: TextStyle(fontSize: 50),
                           ),
                           onPressed: () async {
@@ -62,7 +73,11 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return CubeTimer();
+                                      return CubeTimer(
+                                        penalty: timerString == 0
+                                            ? _inspectionPenalty
+                                            : 0,
+                                      );
                                     },
                                   ),
                                 ),

@@ -39,6 +39,7 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SizedBox.expand(
         child: AnimatedBuilder(
             animation: controller,
@@ -48,7 +49,7 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      color: Colors.amber,
+                      color: Theme.of(context).accentColor,
                       height: controller.value == 0
                           ? MediaQuery.of(context).size.height
                           : controller.value *
@@ -62,7 +63,7 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                         return FlatButton(
                           child: Text(
                             "$timerString",
-                            style: TextStyle(fontSize: 50),
+                            style: Theme.of(context).primaryTextTheme.display1,
                           ),
                           onPressed: () async {
                             if (controller.isAnimating) {

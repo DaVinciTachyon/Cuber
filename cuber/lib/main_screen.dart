@@ -15,9 +15,14 @@ class ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Center(
-          child: Text("Cube Timer"),
+          child: Text(
+            "Cube Timer",
+            style: Theme.of(context).primaryTextTheme.title,
+          ),
         ),
       ),
       body: Center(
@@ -26,13 +31,14 @@ class ResultScreenState extends State<ResultScreen> {
             padding: EdgeInsets.all(16.0),
             child: Text(
               time == -1 ? "DNF" : timeFormat(time, 3),
-              style: TextStyle(
-                fontSize: 40,
-              ),
+              style: Theme.of(context).primaryTextTheme.display1,
             ),
           ),
           FlatButton(
-            child: Text("Timer"),
+            child: Text(
+              "Timer",
+              style: Theme.of(context).primaryTextTheme.button,
+            ),
             onPressed: () async {
               time = await Navigator.push(
                 context,

@@ -48,13 +48,12 @@ class _CubeTimerState extends State<CubeTimer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SizedBox.expand(
         child: FlatButton(
           child: Text(
             timeFormat(_time, 1),
-            style: TextStyle(
-              fontSize: 50,
-            ),
+            style: Theme.of(context).primaryTextTheme.display1,
           ),
           onPressed: () {
             if (_stopwatch.isRunning) {

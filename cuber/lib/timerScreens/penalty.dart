@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'timer.dart';
-import 'penalty.dart';
 
-class Inspection extends StatefulWidget {
-  final int inspection;
+class Penalty extends StatefulWidget {
+  final int penalty;
 
-  Inspection({this.inspection = 15});
+  Penalty({this.penalty = 2});
 
   @override
-  _InspectionTimer createState() => _InspectionTimer(this.inspection);
+  _PenaltyTimer createState() => _PenaltyTimer(this.penalty);
 }
 
-class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
+class _PenaltyTimer extends State<Penalty> with TickerProviderStateMixin {
   AnimationController controller;
-  int _inspection;
+  int _penalty;
 
-  _InspectionTimer(this._inspection);
-
-  int get timerString {
-    Duration duration = controller.value == 0
-        ? controller.duration
-        : controller.duration * controller.value;
-    int d = duration.inSeconds % 60;
-    return d;
-  }
+  _PenaltyTimer(this._penalty);
 
   @override
   void initState() {
@@ -31,9 +22,15 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
     controller = AnimationController(
       vsync: this,
       duration: Duration(
-        seconds: _inspection,
+        seconds: _penalty,
       ),
     );
+    controller.reverse(
+      from: 1.0,
+    );
+    controller.addListener(() {
+      if (controller.value == 0) Navigator.pop(context, false);
+    });
   }
 
   @override
@@ -49,7 +46,7 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).errorColor,
                       height: controller.value == 0
                           ? MediaQuery.of(context).size.height
                           : controller.value *
@@ -62,22 +59,12 @@ class _InspectionTimer extends State<Inspection> with TickerProviderStateMixin {
                       builder: (context, child) {
                         return FlatButton(
                           child: Text(
-                            "$timerString",
+                            "+$_penalty",
                             style: Theme.of(context).primaryTextTheme.display1,
                           ),
                           onPressed: () async {
-                            if (controller.isAnimating) {
-                              controller.stop();
-                              Navigator.pop(context, true);
-                            } else {
-                              controller.reverse(
-                                from: 1.0,
-                              );
-                              controller.addListener(() async {
-                                if (controller.value == 0)
-                                  Navigator.pop(context, false);
-                              });
-                            }
+                            controller.stop();
+                            Navigator.pop(context, true);
                           },
                         );
                       },

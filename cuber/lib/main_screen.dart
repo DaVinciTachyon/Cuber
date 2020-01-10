@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'timerScreens/includes/time.dart';
 import 'timerScreens/inspection.dart';
+import 'timerScreens/penalty.dart';
+import 'timerScreens/timer.dart';
 
 class ResultScreen extends StatefulWidget {
   @override
@@ -40,11 +42,37 @@ class ResultScreenState extends State<ResultScreen> {
               style: Theme.of(context).primaryTextTheme.button,
             ),
             onPressed: () async {
-              time = await Navigator.push(
+              bool inspected;
+              inspected = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
                     return Inspection();
+                  },
+                ),
+              );
+              bool penalty = false;
+              if (!inspected) {
+                penalty = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Penalty();
+                    },
+                  ),
+                );
+                if (!penalty) {
+                  time = -1;
+                  return;
+                }
+              }
+              time = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CubeTimer(
+                      penalty: penalty ? 2 : 0,
+                    );
                   },
                 ),
               );

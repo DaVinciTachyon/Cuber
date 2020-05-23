@@ -45,9 +45,16 @@ class ResultScreenState extends State<ResultScreen> {
               bool inspected;
               inspected = await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return Inspection();
+                PageRouteBuilder(
+                  transitionDuration: Duration(
+                    milliseconds: 0,
+                  ),
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secAnimation) {
+                    return Inspection(
+                      inspection: 2,
+                    );
                   },
                 ),
               );
@@ -55,8 +62,13 @@ class ResultScreenState extends State<ResultScreen> {
               if (!inspected) {
                 penalty = await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) {
+                  PageRouteBuilder(
+                    transitionDuration: Duration(
+                      milliseconds: 0,
+                    ),
+                    pageBuilder: (BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secAnimation) {
                       return Penalty();
                     },
                   ),
@@ -68,8 +80,13 @@ class ResultScreenState extends State<ResultScreen> {
               }
               time = await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
+                PageRouteBuilder(
+                  transitionDuration: Duration(
+                    milliseconds: 0,
+                  ),
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secAnimation) {
                     return CubeTimer(
                       penalty: penalty ? 2 : 0,
                     );
